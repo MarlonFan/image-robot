@@ -16,6 +16,9 @@
     },
     "express/express.d.ts": {
       "commit": "af81415504b4edce8dac8446d96857f8018c6e9f"
+    },
+    "node/node.d.ts": {
+      "commit": "af81415504b4edce8dac8446d96857f8018c6e9f"
     }
   }
 }
