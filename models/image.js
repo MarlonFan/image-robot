@@ -5,7 +5,6 @@ var Schema = mongoose.Schema;
 
 var ImageSchema = new Schema({
 	imageUrl: String,
-	sourceUrlId: Number,
 	imgName: String,
 	imgKeyword: String,
 	isDownload: Boolean
