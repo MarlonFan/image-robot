@@ -94,4 +94,11 @@ Url.prototype.getLinkByBody = function(body) {
 		});
 }
 
+/**
+ * 获取所有主域名链接
+ */
+Url.prototype.getAllPrimaryLink = function () {
+	
+}
+
 module.exports = new Url();
