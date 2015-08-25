@@ -69,6 +69,7 @@ Url.prototype.getImgByBody = function(body, url) {
 				
 				var tmpImgObj = {
 					imageUrl: imageUrl,
+					pageUrl: url,
 					imageName: imageName,
 					imgKeyword: keyword,
 					isDownload: false

@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var mongodb = require('./index');
+var mongodb = require('./mongoose');
 
 var Schema = mongoose.Schema;
 

@@ -21,7 +21,9 @@ var Image = (function () {
  * @return promise:void
  */
 Image.prototype.downloadAllImage = function (imageList, count) {
+	var that = this;
 	return Promise
+		.resolve(null)
 		.then(function() {
 			var currentCount = 0;
 
@@ -34,9 +36,9 @@ Image.prototype.downloadAllImage = function (imageList, count) {
 			}
 
 			for(var i = 0; i < count; i++) {
-				this.queueDownloadImage(imageList);
+				that.queueDownloadImage(imageList);
 			}	
-
+			
 		});
 }
 
@@ -83,6 +85,20 @@ Image.prototype.saveMultipleImage = function (imageList) {
 			resolve();
 		})
 	})
+}
+
+/**
+ * 获取所有图片
+ */
+Image.prototype.getAllImage = function () {
+	return new Promise(function(resolve, reject) {
+		imageModel.find({}, function(err, docs) {
+			if(err) {
+				reject(err);
+			}
+			resolve(docs);
+		})
+	});
 }
 
 module.exports = new Image;

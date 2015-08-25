@@ -1,11 +1,12 @@
 var mongoose = require('mongoose');
-var mongodb = require('./index');
+var mongodb = require('./mongoose');
 
 var Schema = mongoose.Schema;
 
 var ImageSchema = new Schema({
 	imageUrl: String,
-	imgName: String,
+	pageUrl: String,
+	imageName: String,
 	imgKeyword: String,
 	isDownload: Boolean
 });
