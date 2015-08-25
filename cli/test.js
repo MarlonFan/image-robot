@@ -1,7 +1,7 @@
 var Url = require('../modules/url');
 var Image = require('../modules/image');
 
-var testUrl = 'http://www.meizitu.com/a/2.html';
+var testUrl = 'http://zmlearn.com';
 
 // console.log('-------------------拉取页面测试和分析图片链接-------------------');
 // /**

@@ -2,7 +2,10 @@ var Promise = require('bluebird');
 var fs = require("fs");
 var request = require('request');
 var http = require('http');
+
 var Config = require('../config');
+var imageModel = require('../models/image');
+
 
 var Image = (function () {
     function Image() {
@@ -15,23 +18,26 @@ var Image = (function () {
  * 根据一个图片urlList来下载图片
  * @param imageList
  * @param count
- * @return viod
+ * @return promise:void
  */
 Image.prototype.downloadAllImage = function (imageList, count) {
+	return Promise
+		.then(function() {
+			var currentCount = 0;
 
-	var currentCount = 0;
-	
-	if(imageList.length == 0) {
-		return;
-	}
-	
-	if(currentCount >= count) {
-		return;
-	}
-	
-	for(var i = 0; i < count; i++) {
-		this.queueDownloadImage(imageList);
-	}
+			if(imageList.length == 0) {
+				return;
+			}
+
+			if(currentCount >= count) {
+				return;
+			}
+
+			for(var i = 0; i < count; i++) {
+				this.queueDownloadImage(imageList);
+			}	
+
+		});
 }
 
 /**
@@ -48,8 +54,6 @@ Image.prototype.queueDownloadImage = function (imageList) {
 	}
 	
 	var imgInfo = imageList.shift();
-	
-	this.currentCount += 1;
 
 	request.head(imgInfo.imageUrl, function(err, res, body) {
 		var picStream = fs.createWriteStream(Config.path.downloadImagePath + imgInfo.imageName);
@@ -63,6 +67,22 @@ Image.prototype.queueDownloadImage = function (imageList) {
 		});
 		request(imgInfo.imageUrl).pipe(picStream);	
 	});
+}
+
+/**
+ * 保存多个image信息
+ * @param imgList[];
+ * @return promise:void
+ */
+Image.prototype.saveMultipleImage = function (imageList) {
+	return new Promise(function(resolve, reject) {
+		imageModel.create(imageList, function(err) {
+			if (err) {
+				reject(err);
+			}
+			resolve();
+		})
+	})
 }
 
 module.exports = new Image;
