@@ -93,6 +93,37 @@ Url.prototype.getLinkByBody = function(body) {
 		.resolve(body)
 		.then(function(body) {
 			return body.match(/<a([^>]*)\s*href=('|\")([^'\"]+)('|\")/g).join(',').match(/(http:|https:)\/\/.*?[^"]+/g);
+		})
+		.then(function(urlList) {
+			var tmpRst  = [];
+			
+			for (var i = 0; i < urlList.length; i++) {
+				var item = urlList[i];
+				if(tmpRst.indexOf(item) == -1) {
+					tmpRst.push(item);
+				}
+			}
+			
+			return new Promise(function(resolve, reject) {
+				urlModel.find({url: {$in: tmpRst}}, function(err, docs) {
+					if (err) {
+						reject('数据库查重失败');
+					}
+					
+					if(!docs) {
+						resolve(tmpRst);
+					}
+					
+					for (var i = 0; i < docs.length; i++) {
+						var item = docs[i].url;
+						if (tmpRst.indexOf(item) != -1) {
+							tmpRst.splice(tmpRst.indexOf(item), 1);
+						}
+					}
+					
+					resolve(tmpRst);
+				})
+			})
 		});
 }
 
@@ -151,15 +182,43 @@ Url.prototype.getUrlTDK = function (body) {
 /**
  * 根据url获取url记录
  */
-Url.prototype.getUrlRecord = function (url) {
+Url.prototype.getUrlRecordByUrl = function (url) {
 	return new Promise(function(resolve, reject) {
-		urlModel.find({url: url}, function(err, docs) {
+		urlModel.findOne({url: url}, function(err, docs) {
+			if(err) {
+				reject(err);	
+			}
+			resolve(docs);
+		})
+	});
+}
+
+/**
+ * 根据id获取url记录
+ */
+Url.prototype.getUrlRecordById = function (id) {
+	return new Promise(function(resolve, reject) {
+		urlModel.findOne({_id: id}, function(err, docs) {
 			if(err) {
 				reject(err);
 			}
 			resolve(docs);
 		})
 	});
+}
+
+/**
+ * 根据url来获取子链接
+ */
+Url.prototype.getUrlSon = function(url) {
+	return new Promise(function(resolve, reject) {
+		urlModel.find({parentUrl: url}, function(err, docs) {
+			if(err) {
+				reject(err);
+			}
+			resolve(docs);
+		})
+	})
 }
 
 module.exports = new Url();

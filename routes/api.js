@@ -7,31 +7,6 @@ var ResJson = require('../modules/core/res-json');
 
 var router = express.Router();
 
-/* GET home page. */
-router.get('/get-image', function(req, res, next) {
-    var testUrl = 'http://www.douban.com';
-    var imgList;
-    
-    Url.pullPage(testUrl)
-        .then(function(body) {
-            return Url.getImgByBody(body, testUrl);
-        })
-        .then(function(list) {
-            imgList = list;
-            return Image.downloadAllImage(list, 4);
-        })
-        .then(function() {
-            return Image.saveMultipleImage(imgList);
-        })
-        .then(function() {
-            res.send('success');
-        })
-        .catch(function(err) {
-            res.send('failed');
-            throw new Error(err);
-        })
-});
-
 /**
  * 添加一个url
  */
@@ -64,6 +39,71 @@ router.post('/user/robot/add-url', function(req, res, next) {
         .catch(function(err) {
             res.json(ResJson.failedJson(JSON.stringify(err)));
         });
-})
+});
+
+/**
+ * 根据一个url抓取他的链接
+ */
+router.post('/user/urlinfo/get-son-url', function(req, res, next) {
+    var url = req.body.url;
+   
+    if( ! paramValidator.isUrl(url, 'url', res)) {
+        return;
+    }
+    
+    Url.getUrlRecordByUrl(url)
+        .then(function(urlRecord) {
+                return Url.pullPage(urlRecord.url);
+            })
+            .then(function(body) {
+                return Url.getLinkByBody(body);
+            })
+            .map(function(tmpUrl) {
+                return Url.createUrl(tmpUrl)
+                    .then(function(record) {
+                        record.parentUrl = url;
+                        return record.save();     
+                    });
+            })
+            .then(function() {
+                res.json(ResJson.redirectJson(''));
+            });
+});
+
+/**
+ * 根据一个url抓取他的图片
+ */
+router.post('/user/urlinfo/get-son-img', function(req, res, next) {
+    var url = req.body.url;
+   
+    if( ! paramValidator.isUrl(url, 'url', res)) {
+        return;
+    }
+    
+    Url.getUrlRecordByUrl(url)
+        .then(function(urlRecord) {
+                return Url.pullPage(urlRecord.url);
+            })
+            .then(function(body) {
+                return Url.getImgByBody(body, url);
+            })
+            .then(function(imgInfo) {
+                return Image.saveMultipleImage(imgInfo);
+            })
+            .then(function() {
+                res.json(ResJson.redirectJson(''));
+            });
+});
+
+/**
+ * 下载所有未下载的图片
+ */
+router.get('/user/download-all-img', function(req, res, next) {
+    Image.getAllNotDownloadImage()
+        .then(function (imgRecords) {
+            return Image.downloadAllImage(imgRecords, 3);
+        });
+    res.send('done');
+});
 
 module.exports = router;

@@ -25,20 +25,12 @@ Image.prototype.downloadAllImage = function (imageList, count) {
 	return Promise
 		.resolve(null)
 		.then(function() {
-			var currentCount = 0;
-
 			if(imageList.length == 0) {
 				return;
 			}
-
-			if(currentCount >= count) {
-				return;
-			}
-
 			for(var i = 0; i < count; i++) {
 				that.queueDownloadImage(imageList);
-			}	
-			
+			}
 		});
 }
 
@@ -64,7 +56,8 @@ Image.prototype.queueDownloadImage = function (imageList) {
 			if(err) {
 				console.log(err);
 			}
-			console.log(imgInfo.imageName + ' 下载完成');
+			imgInfo.isDownload = true;
+			imgInfo.save();
 			that.queueDownloadImage(imageList);
 		});
 		request(imgInfo.imageUrl).pipe(picStream);	
@@ -88,17 +81,45 @@ Image.prototype.saveMultipleImage = function (imageList) {
 }
 
 /**
- * 获取所有图片
+ * 获取所有已下载图片
  */
 Image.prototype.getAllImage = function () {
 	return new Promise(function(resolve, reject) {
-		imageModel.find({}, function(err, docs) {
+		imageModel.find({isDownload: true}, function(err, docs) {
 			if(err) {
 				reject(err);
 			}
 			resolve(docs);
 		})
 	});
+}
+
+/**
+ * 获取所有未下载图片
+ */
+Image.prototype.getAllNotDownloadImage = function () {
+	return new Promise(function(resolve, reject) {
+		imageModel.find({isDownload: false}, function(err, docs) {
+			if(err) {
+				reject(err);
+			}
+			resolve(docs);
+		})
+	});
+}
+
+/**
+ * 根据url来获取图片列表
+ */
+Image.prototype.getUrlImg = function(url) {
+	return new Promise(function(resolve, reject) {
+		imageModel.find({pageUrl: url}, function(err, docs) {
+			if(err) {
+				reject(err);
+			}
+			resolve(docs);
+		})
+	})
 }
 
 module.exports = new Image;

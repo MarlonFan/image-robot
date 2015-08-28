@@ -8,7 +8,8 @@ var UrlSchema = new Schema({
 	urlDescription: String,
 	urlKeyword: String,
 	parentUrl: String,
-	urlTitle: String
+	urlTitle: String,
+	isDownload: Boolean
 });
 
 var Url = mongoose.model('Url', UrlSchema);
