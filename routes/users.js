@@ -10,14 +10,16 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/robot', function(req, res, next) {
-    var url;
     
-    Url.getAllPrimaryLink
-    
-    
-    res.render('users/index', {
-        url: 
-    });
+    Url.getAllPrimaryLink()
+        .then(function(docs) {
+            res.render('users/index', {
+                url: docs
+            });
+        })
+        .catch(function (err) {
+            throw new Error(err);
+        });
 });
 
 module.exports = router;

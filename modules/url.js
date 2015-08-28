@@ -4,6 +4,8 @@ var request = require('request');
 var http = require('http');
 var url = require('url');
 
+var urlModel = require('../models/url');
+
 var Url = (function () {
     function Url() {
     }
@@ -96,9 +98,68 @@ Url.prototype.getLinkByBody = function(body) {
 
 /**
  * 获取所有主域名链接
+ * @return url[]
  */
 Url.prototype.getAllPrimaryLink = function () {
-	
+	return new Promise(function(resolve, reject) {
+		urlModel.find({parentUrl: null}, function(err, docs) {
+			if (err) {
+				reject(err);
+			}
+			resolve(docs);
+		})
+	})
+}
+
+/**
+ * 添加一个url
+ * @param url
+ * @return promise:urlRecord
+ */
+Url.prototype.createUrl = function (url) {
+	return new Promise(function(resolve, reject) {
+		var urlRecord = new urlModel({url: url});
+		urlRecord.save(function(err, res) {
+			if(err) {
+				reject(err);
+			}
+			resolve(urlRecord);
+		});
+	});
+}
+
+/**
+ * 获取url的TDK
+ * @param urlRecord
+ */
+Url.prototype.getUrlTDK = function (body) {
+	return Promise
+		.resolve(body)
+		.then(function(body) {
+			var title = body.match(/<title>.*?<\/title>/);
+				title = title ? title[0].replace('<title>', '').replace('<\/title>', '') : 'not found title';
+			var keyword = body.match(/<meta.*?keywords.*?>/);
+				keyword = keyword ? keyword[0].match(/content=.*?".*?"/)[0].match(/".*?"/)[0].replace('"', '').replace('"', '') : 'not found keyword';
+			var description = body.match(/<meta.*?description.*?>/);
+				description = description ? description[0].match(/content=.*?".*?"/)[0].match(/".*?"/)[0].replace('"', '').replace('"', '') : 'not found keyword';
+
+			var rst = {title: title, keyword: keyword, description: description};
+			return rst;
+		});
+}
+
+/**
+ * 根据url获取url记录
+ */
+Url.prototype.getUrlRecord = function (url) {
+	return new Promise(function(resolve, reject) {
+		urlModel.find({url: url}, function(err, docs) {
+			if(err) {
+				reject(err);
+			}
+			resolve(docs);
+		})
+	});
 }
 
 module.exports = new Url();

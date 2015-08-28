@@ -1,5 +1,5 @@
 {{#extend "css"}}
-<link rel='stylesheet' href='/stylesheets/user.css' />
+<link rel='stylesheet' href='/stylesheets/user/robot/robot.css' />
 {{/extend}}
 
 <div class="col-lg-12">
@@ -7,25 +7,26 @@
   		<h1>爬虫GUI页面</h1>
 	</div>
 	<div class="panel panel-default">
-		<div class="list-group">
-			{{#each url}}
-				
-			{{/url}}
-		</div>
-		
 		<div class="panel-body">
 			<div class="col-lg-6">
 				<div class="input-group">
-				<input type="text" class="form-control" placeholder="输入要爬取的页面,必须加http://">
+				<input type="text" class="form-control J-url" placeholder="输入要爬取的页面,必须加http://">
 				<span class="input-group-btn">
-					<button class="btn btn-default" type="button">添加</button>
+					<button class="btn btn-default J-sub-url" type="button">添加</button>
 				</span>
 				</div><!-- /input-group -->
 			</div>
+		</div>
+		
+		<div class="list-group">
+			{{#each url}}
+				<a class="list-group-item disabled">请点击要爬去的链接</a>
+				<a href="/users/urlinfo/?id={{}}" class="list-group-item">{{this.url}}</a>
+			{{/each}}
 		</div>
 	</div>
 </div>
 
 {{#extend "script"}}
-
+<script src="/javascripts/user/robot/robot.js"></script>
 {{/extend}}

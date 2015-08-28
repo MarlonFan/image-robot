@@ -5,8 +5,10 @@ var Schema = mongoose.Schema;
 
 var UrlSchema = new Schema({
 	url: String,
-	UrlDescription: String,
-	UrlKeyword: String
+	urlDescription: String,
+	urlKeyword: String,
+	parentUrl: String,
+	urlTitle: String
 });
 
 var Url = mongoose.model('Url', UrlSchema);
