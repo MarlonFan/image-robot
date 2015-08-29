@@ -101,9 +101,12 @@ router.post('/user/urlinfo/get-son-img', function(req, res, next) {
 router.get('/user/download-all-img', function(req, res, next) {
     Image.getAllNotDownloadImage()
         .then(function (imgRecords) {
-            return Image.downloadAllImage(imgRecords, 3);
+            return Image.downloadAllImage(imgRecords, 1);
+        })
+        .then(function() {
+            res.json(ResJson.redirectJson(''))
         });
-    res.send('done');
+    
 });
 
 module.exports = router;

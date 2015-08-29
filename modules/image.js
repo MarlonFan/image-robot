@@ -5,6 +5,7 @@ var http = require('http');
 
 var Config = require('../config');
 var imageModel = require('../models/image');
+var io = require('../socket/socket');
 
 
 var Image = (function () {
@@ -22,15 +23,25 @@ var Image = (function () {
  */
 Image.prototype.downloadAllImage = function (imageList, count) {
 	var that = this;
+	var allNumber = imageList.length;
 	return Promise
 		.resolve(null)
 		.then(function() {
 			if(imageList.length == 0) {
 				return;
 			}
+			io.on('connection', function (socket) {
+				var notice = setInterval(function() {
+					socket.emit('news', [imageList.length,allNumber]);
+					if (imageList.length == 0) {
+						clearInterval(notice);
+					}
+				}, 1)
+			});
 			for(var i = 0; i < count; i++) {
 				that.queueDownloadImage(imageList);
 			}
+				
 		});
 }
 
@@ -50,14 +61,17 @@ Image.prototype.queueDownloadImage = function (imageList) {
 	var imgInfo = imageList.shift();
 
 	request.head(imgInfo.imageUrl, function(err, res, body) {
+		var startTime = (new Date()).valueOf();
 		var picStream = fs.createWriteStream(Config.path.downloadImagePath + imgInfo.imageName);
-
+		
 		picStream.on('close', function(err) {
 			if(err) {
 				console.log(err);
 			}
+			
 			imgInfo.isDownload = true;
 			imgInfo.save();
+			
 			that.queueDownloadImage(imageList);
 		});
 		request(imgInfo.imageUrl).pipe(picStream);	
