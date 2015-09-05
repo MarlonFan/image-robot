@@ -106,7 +106,6 @@ router.get('/user/download-all-img', function(req, res, next) {
         .then(function() {
             res.json(ResJson.redirectJson(''))
         });
-    
 });
 
 module.exports = router;
