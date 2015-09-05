@@ -15,12 +15,8 @@
     },
     "filesGlob": [
         "*/**/*.ts",
-        "!yog/**",
-        "!tools/**",
         "!node_modules/**",
-        "config.ts",
-        "zm-config.ts"
-    ],
-	"files": [	
-	]
+        "!typings/**",
+        "config.ts"
+    ]
 }

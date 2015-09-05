@@ -8,15 +8,11 @@ var config = require('./dest/config');
 
 gulp.task('sync-tsconfig', function name(callback) {
     var tsConfig = require('./tsconfig.json');
-    globby(tsConfig.filesGlob, function (err, matches) {
-        if (err) {
-            callback(err);
-            return;
-        }
-        
-        tsConfig.files = matches;
-        fs.writeFile('tsconfig.json', JSON.stringify(tsConfig, null, '    ') + '\n', callback);
-    });
+    globby(tsConfig.filesGlob)
+        .then(function(paths) {
+            tsConfig.files = matches;
+            fs.writeFile('tsconfig.json', JSON.stringify(tsConfig, null, '    ') + '\n', callback); 
+        });
 });
 
 gulp.task('build', function (callback) {
