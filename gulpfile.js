@@ -10,9 +10,10 @@ gulp.task('sync-tsconfig', function name(callback) {
     var tsConfig = require('./tsconfig.json');
     globby(tsConfig.filesGlob)
         .then(function(paths) {
-            tsConfig.files = matches;
+            tsConfig.files = paths;
             fs.writeFile('tsconfig.json', JSON.stringify(tsConfig, null, '    ') + '\n', callback); 
         });
+    console.log('sync-tsconfig done...');
 });
 
 gulp.task('build', function (callback) {
