@@ -1,0 +1,26 @@
+{
+	"version": "1.5.0",
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "declaration": false,
+        "noImplicitAny": true,
+        "removeComments": true,
+        "noEmitOnError": true,
+        "noLib": false,
+        "sourceMap": true,
+        "diagnostics": false,
+        "outDir": "./dest",
+        "experimentalDecorators": true
+    },
+    "filesGlob": [
+        "*/**/*.ts",
+        "!yog/**",
+        "!tools/**",
+        "!node_modules/**",
+        "config.ts",
+        "zm-config.ts"
+    ],
+	"files": [	
+	]
+}

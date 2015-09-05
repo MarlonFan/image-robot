@@ -1,0 +1,20 @@
+{
+    "version": "0.1.0",
+    "command": "gulp",
+    "isShellCommand": true,
+    "tasks": [
+        {
+            "taskName": "build",
+            "isBuildCommand": true,
+            "isWatching": false,
+            "problemMatcher": "$tsc"
+        }, {
+            "taskName": "build-and-watch",
+            "isWatching": true,
+            "problemMatcher": "$tsc"
+        }, {
+            "taskName": "sync-tsconfig",
+            "isWatching": false
+        }
+    ]
+}
