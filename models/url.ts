@@ -11,6 +11,13 @@ var UrlSchema = new Schema({
 	isDownload: Boolean
 });
 
-var Url = Mongoose.model('Url', UrlSchema);
+export var Model = Mongoose.model('Url', UrlSchema);
 
-module.exports = Url;
+export interface ModelInterface {
+	url?: string;
+	urlDescription?: string;
+	urlKeyword?: string;
+	parentUrl?: string;
+	urlTitle?: string;
+	isDownload?: boolean;
+}

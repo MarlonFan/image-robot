@@ -20,9 +20,9 @@
     ],
     "files": [
         "models/image.ts",
-        "models/mongoose.ts",
         "models/url.ts",
-        "modules/imagesss.ts",
+        "modules/image.ts",
+        "modules/url.ts",
         "typings/bluebird/bluebird.d.ts",
         "typings/express/express.d.ts",
         "typings/form-data/form-data.d.ts",
@@ -32,6 +32,8 @@
         "typings/node/node.d.ts",
         "typings/request/request.d.ts",
         "typings/serve-static/serve-static.d.ts",
-        "typings/tsd.d.ts"
+        "typings/socket.io/socket.io.d.ts",
+        "typings/tsd.d.ts",
+        "config.ts"
     ]
 }

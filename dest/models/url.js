@@ -8,6 +8,5 @@ var UrlSchema = new Schema({
     urlTitle: String,
     isDownload: Boolean
 });
-var Url = Mongoose.model('Url', UrlSchema);
-module.exports = Url;
+exports.Model = Mongoose.model('Url', UrlSchema);
 //# sourceMappingURL=url.js.map

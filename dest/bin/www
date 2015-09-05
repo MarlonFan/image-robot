@@ -90,3 +90,5 @@ function onListening() {
 }
 
 var io = require('../socket/socket');
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/robot');
