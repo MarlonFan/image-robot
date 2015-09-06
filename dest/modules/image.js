@@ -11,6 +11,9 @@ function downloadAllImage(imageList, count) {
         if (imageList.length == 0) {
             return;
         }
+        for (var i = 0; i < count; i++) {
+            queueDownloadImage(imageList);
+        }
     });
 }
 exports.downloadAllImage = downloadAllImage;
@@ -35,23 +38,64 @@ function queueDownloadImage(imageList) {
 }
 exports.queueDownloadImage = queueDownloadImage;
 function saveMultipleImage(imageList) {
-    return Promise
-        .resolve(image_1.Model.create(imageList));
+    return new Promise(function (resolve, reject) {
+        image_1.Model.create(imageList, function (err, res) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            else {
+                resolve(res);
+                return;
+            }
+        });
+    });
 }
 exports.saveMultipleImage = saveMultipleImage;
 function getAllImage() {
-    return Promise
-        .resolve(image_1.Model.find({ isDownload: true }));
+    return new Promise(function (resolve, reject) {
+        image_1.Model.find({ isDownload: true }, function (err, res) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            else {
+                resolve(res);
+                return;
+            }
+        });
+    });
 }
 exports.getAllImage = getAllImage;
 function getAllNotDownloadImage() {
-    return Promise
-        .resolve(image_1.Model.find({ isDownload: false }));
+    return new Promise(function (resolve, reject) {
+        image_1.Model.find({ isDownload: false }, function (err, res) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            else {
+                resolve(res);
+                return;
+            }
+        });
+    });
 }
 exports.getAllNotDownloadImage = getAllNotDownloadImage;
 function getUrlImg(url) {
-    return Promise
-        .resolve(image_1.Model.find({ url: url }));
+    console.log(url);
+    return new Promise(function (resolve, reject) {
+        image_1.Model.find({ pageUrl: url }, function (err, res) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            else {
+                resolve(res);
+                return;
+            }
+        });
+    });
 }
 exports.getUrlImg = getUrlImg;
 //# sourceMappingURL=image.js.map

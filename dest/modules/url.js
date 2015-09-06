@@ -135,11 +135,15 @@ function getUrlTDK(body) {
 exports.getUrlTDK = getUrlTDK;
 function getUrlRecordByUrl(url) {
     return new Promise(function (resolve, reject) {
-        url_1.Model.findOne({ url: url }, function (err, docs) {
+        url_1.Model.findOne({ url: url }, function (err, doc) {
             if (err) {
                 reject(err);
+                return;
             }
-            resolve(docs);
+            else {
+                resolve(doc);
+                return;
+            }
         });
     });
 }
@@ -149,8 +153,12 @@ function getUrlRecordById(id) {
         url_1.Model.findOne({ _id: id }, function (err, docs) {
             if (err) {
                 reject(err);
+                return;
             }
-            resolve(docs);
+            else {
+                resolve(docs);
+                return;
+            }
         });
     });
 }
@@ -160,8 +168,12 @@ function getUrlSon(url) {
         url_1.Model.find({ parentUrl: url }, function (err, docs) {
             if (err) {
                 reject(err);
+                return;
             }
-            resolve(docs);
+            else {
+                resolve(docs);
+                return;
+            }
         });
     });
 }

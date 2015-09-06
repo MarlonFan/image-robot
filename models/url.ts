@@ -13,7 +13,16 @@ var UrlSchema = new Schema({
 
 export var Model = Mongoose.model('Url', UrlSchema);
 
-export interface ModelInterface {
+export interface ModelInterface extends Mongoose.Document {
+	url?: string;
+	urlDescription?: string;
+	urlKeyword?: string;
+	parentUrl?: string;
+	urlTitle?: string;
+	isDownload?: boolean;
+}
+
+export interface PropertyList {
 	url?: string;
 	urlDescription?: string;
 	urlKeyword?: string;

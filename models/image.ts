@@ -19,3 +19,11 @@ export interface ModelInterface extends Mongoose.Document {
 	imgKeyword?: string;
 	isDownload?: boolean;
 };
+
+export interface PropertyList {
+	imageUrl?: string;
+	pageUrl?: string;
+	imageName?: string;
+	imgKeyword?: string;
+	isDownload?: boolean;
+}

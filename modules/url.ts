@@ -4,15 +4,16 @@ import * as Request from 'request';
 import * as Http from 'http'
 import * as Mongoose from 'mongoose';
 
-import {Model as urlModel, ModelInterface as urlModelInterface} from '../models/url';
-
+import {Model as urlModel, ModelInterface as urlModelInterface, PropertyList as urlPropertyList } from '../models/url';
+import {Model as imageModel, ModelInterface as imageModelInterface, PropertyList as imagePropertyList } from '../models/image';
+import * as Image from './image';
 
 /**
  * 拉取页面信息,可以获取到要抓取的页面的信息
  * @param url: string
  * @return request body
  */
-export function pullPage(url: string) {
+export function pullPage(url: string): Promise<string>|Promise<any> {
 	return new Promise((resolve, reject) => {
 		Request({
 			url,
@@ -47,7 +48,7 @@ export function getImgByBody(body: string, url: string) {
 			return body.match(/<img([^>]*)\s*src=('|\")([^'\"]+)('|\").*?>/g);
 		})
 		.then(imgStringList => {
-			var imgList: urlModelInterface[] = [];
+			var imgList: imagePropertyList[] = [];
 			
 			for(var i = 0; i < imgStringList.length; i++) {
 				
@@ -62,7 +63,7 @@ export function getImgByBody(body: string, url: string) {
 					
 				var imageName = (new Date()).valueOf().toString() + i.toString() + imageUrl.substr(-4, 4);
 				
-				var tmpImgObj: urlModelInterface = {
+				var tmpImgObj: imagePropertyList = {
 					imageUrl: imageUrl,
 					pageUrl: url,
 					imageName: imageName,
@@ -80,7 +81,7 @@ export function getImgByBody(body: string, url: string) {
  * @param response body
  * @return linkList[]
  */
-export function getLinkByBody(body: string) {
+export function getLinkByBody(body: string): Promise<string[]>|Promise<any> {
 	return Promise
 		.resolve(body)
 		.then(body => {
@@ -143,7 +144,7 @@ export function getAllPrimaryLink() {
  * @param url
  * @return promise:urlRecord
  */
-export function createUrl(url: string) {
+export function createUrl(url: string): Promise<urlModelInterface>|Promise<any> {
 	return new Promise((resolve, reject) => {
 		var urlRecord: Mongoose.Document = new urlModel({url});
 		urlRecord.save((err, res) => {
@@ -180,13 +181,16 @@ export function getUrlTDK(body: string) {
 /**
  * 根据url获取url记录
  */
-export function getUrlRecordByUrl(url: string) {
+export function getUrlRecordByUrl(url: string): Promise<urlModelInterface>|Promise<any> {
 	return new Promise((resolve, reject) => {
-		urlModel.findOne({url: url}, (err, docs) => {
+		urlModel.findOne({url: url}, (err, doc) => {
 			if(err) {
-				reject(err);	
+				reject(err);
+				return;	
+			} else {
+				resolve(doc);
+				return;							
 			}
-			resolve(docs);
 		})
 	});
 }
@@ -199,8 +203,11 @@ export function getUrlRecordById(id: string) {
 		urlModel.findOne({_id: id}, (err, docs) => {
 			if(err) {
 				reject(err);
+				return;
+			} else {
+				resolve(docs);
+				return;	
 			}
-			resolve(docs);
 		})
 	});
 }
@@ -208,13 +215,16 @@ export function getUrlRecordById(id: string) {
 /**
  * 根据url来获取子链接
  */
-export function getUrlSon(url: string) {
+export function getUrlSon(url: string): Promise<urlModelInterface[]>|Promise<any> {
 	return new Promise((resolve, reject) => {
 		urlModel.find({parentUrl: url}, (err, docs) => {
 			if(err) {
 				reject(err);
+				return;
+			} else {
+				resolve(docs);
+				return;
 			}
-			resolve(docs);
 		})
 	})
 }

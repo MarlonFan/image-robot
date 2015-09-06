@@ -5,7 +5,8 @@ import * as Http from 'http';
 import * as Io from 'socket.io';
 
 import * as Config from '../config';
-import { Model as imageModel, ModelInterface as ImageModelInterface } from '../models/image';
+import * as Url from './url';
+import { Model as imageModel, ModelInterface as ImageModelInterface, PropertyList as imagePropertyList } from '../models/image';
 
 /**
  * 根据一个图片urlList来下载图片
@@ -13,7 +14,7 @@ import { Model as imageModel, ModelInterface as ImageModelInterface } from '../m
  * @param count
  * @return promise:void
  */
-export function downloadAllImage(imageList: ImageModelInterface[], count: number) {
+export function downloadAllImage(imageList: ImageModelInterface[], count: number): Promise<void> {
 	var allNumber: number = imageList.length;
 	return Promise
 		.resolve(null)
@@ -31,9 +32,9 @@ export function downloadAllImage(imageList: ImageModelInterface[], count: number
 			// 	}, 1)
 			// });
 
-			// for(var i = 0; i < count; i++) {
-			// 	that.queueDownloadImage(imageList);
-			// }
+			for(var i = 0; i < count; i++) {
+				queueDownloadImage(imageList);
+			}
 
 		});
 }
@@ -43,7 +44,7 @@ export function downloadAllImage(imageList: ImageModelInterface[], count: number
  * @param urlList
  * @return viod
  */
-export function queueDownloadImage(imageList: ImageModelInterface[]) {
+export function queueDownloadImage(imageList: ImageModelInterface[]): void {
 	if (imageList.length == 0) {
 		return;
 	}
@@ -73,32 +74,68 @@ export function queueDownloadImage(imageList: ImageModelInterface[]) {
  * @param imgList[];
  * @return promise:void
  */
-export function saveMultipleImage(imageList: ImageModelInterface[]) {
-	return Promise
-		.resolve(imageModel.create(imageList));
+export function saveMultipleImage(imageList: imagePropertyList[]): Promise<any> {
+	return new Promise((resolve, reject) => {
+		imageModel.create(imageList, (err, res) => {
+			if(err) {
+				reject(err);
+				return;
+			} else {
+				resolve(res);
+				return;
+			}			
+		})
+	});
 }
 
 /**
  * 获取所有已下载图片
  */
-export function getAllImage() {
-	return Promise
-		.resolve(imageModel.find({isDownload: true}));
+export function getAllImage(): Promise<any> {
+	return new Promise((resolve, reject) => {
+		imageModel.find({isDownload: true}, (err, res) => {
+			if (err) {
+				reject(err);
+				return;
+			} else {
+				resolve(res);
+				return;
+			}
+		});
+	});
 }
 
 /**
  * 获取所有未下载图片
  */
-export function getAllNotDownloadImage() {
-	return Promise
-		.resolve(imageModel.find({isDownload: false}));
+export function getAllNotDownloadImage(): Promise<any> {
+	return new Promise((resolve, reject) => {
+		imageModel.find({isDownload: false}, (err, res) => {
+			if (err) {
+				reject(err);
+				return;
+			} else {
+				resolve(res);
+				return;
+			}
+		});
+	});
 }
 
 /**
  * 根据url来获取图片列表
  */
-
-export function getUrlImg(url: string) {
-	return Promise
-		.resolve(imageModel.find({url}));
+export function getUrlImg(url: string): Promise<any> {
+	console.log(url);
+	return new Promise((resolve, reject) => {
+		imageModel.find({pageUrl: url}, (err, res) => {
+			if (err) {
+				reject(err);
+				return;
+			} else {
+				resolve(res);
+				return;
+			}
+		});
+	});
 }

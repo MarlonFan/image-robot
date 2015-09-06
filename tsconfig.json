@@ -21,8 +21,13 @@
     "files": [
         "models/image.ts",
         "models/url.ts",
+        "modules/core/res-json.ts",
         "modules/image.ts",
         "modules/url.ts",
+        "routes/api.ts",
+        "routes/index.ts",
+        "routes/users.ts",
+        "test/image-module.ts",
         "typings/bluebird/bluebird.d.ts",
         "typings/express/express.d.ts",
         "typings/form-data/form-data.d.ts",
@@ -34,6 +39,7 @@
         "typings/serve-static/serve-static.d.ts",
         "typings/socket.io/socket.io.d.ts",
         "typings/tsd.d.ts",
+        "validator/param-validator.ts",
         "config.ts"
     ]
 }
