@@ -7,6 +7,6 @@ var ImageSchema = new Schema({
     imgKeyword: String,
     isDownload: Boolean
 });
-var Image = Mongoose.model('Image', ImageSchema);
-module.exports = Image;
+exports.Model = Mongoose.model('Image', ImageSchema);
+;
 //# sourceMappingURL=image.js.map

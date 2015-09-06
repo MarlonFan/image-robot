@@ -10,9 +10,9 @@ var ImageSchema = new Schema({
 	isDownload: Boolean
 });
 
-export var Model = Mongoose.model('Image', ImageSchema);
+export var Model = Mongoose.model<ModelInterface>('Image', ImageSchema);
 
-export interface ModelInterface {
+export interface ModelInterface extends Mongoose.Document {
 	imageUrl?: string;
 	pageUrl?: string;
 	imageName?: string;
