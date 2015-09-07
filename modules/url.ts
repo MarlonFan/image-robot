@@ -8,13 +8,19 @@ import {Model as urlModel, ModelInterface as urlModelInterface, PropertyList as 
 import {Model as imageModel, ModelInterface as imageModelInterface, PropertyList as imagePropertyList } from '../models/image';
 import * as Image from './image';
 
+/** title keyword descript */
+export interface TDKItem {
+	title: string;
+	keyword: string;
+	description: string;
+}
 /**
  * 拉取页面信息,可以获取到要抓取的页面的信息
  * @param url: string
  * @return request body
  */
-export function pullPage(url: string): Promise<string>|Promise<any> {
-	return new Promise((resolve, reject) => {
+export function pullPage(url: string): Promise<any>{
+	return new Promise<any>((resolve, reject) => {
 		Request({
 			url,
 			method: 'GET',
@@ -27,8 +33,10 @@ export function pullPage(url: string): Promise<string>|Promise<any> {
 		}, (err, res, body) => {
 			if (err || res.statusCode != 200) {
 				reject(err);
+				return;
 			}
 			resolve(body);
+			return;
 		})
 	})
 	.catch(err => {
@@ -41,7 +49,7 @@ export function pullPage(url: string): Promise<string>|Promise<any> {
  * @param response body
  * @return imgList[]
  */
-export function getImgByBody(body: string, url: string) {
+export function getImgByBody(body: string, url: string): Promise<imagePropertyList[]> {
 	return Promise
 		.resolve(body)
 		.then(body => {
@@ -81,7 +89,7 @@ export function getImgByBody(body: string, url: string) {
  * @param response body
  * @return linkList[]
  */
-export function getLinkByBody(body: string): Promise<string[]>|Promise<any> {
+export function getLinkByBody(body: string): Promise<string[]> {
 	return Promise
 		.resolve(body)
 		.then(body => {
@@ -97,7 +105,7 @@ export function getLinkByBody(body: string): Promise<string[]>|Promise<any> {
 				}
 			}
 			
-			return new Promise((resolve, reject) => {
+			return new Promise<string[]>((resolve, reject) => {
 				urlModel.find({url: {$in: tmpRst}}, (err: string, docs: urlModelInterface[]) => {
 					if (err) {
 						reject('数据库查重失败');
@@ -126,8 +134,8 @@ export function getLinkByBody(body: string): Promise<string[]>|Promise<any> {
  * 获取所有主域名链接
  * @return url[]
  */
-export function getAllPrimaryLink() {
-	return new Promise((resolve, reject) => {
+export function getAllPrimaryLink(): Promise<urlModelInterface[]> {
+	return new Promise<urlModelInterface[]>((resolve, reject) => {
 		urlModel.find({parentUrl: null}, (err: string, docs: urlModelInterface[]) => {
 			if (err) {
 				reject(err);
@@ -144,8 +152,8 @@ export function getAllPrimaryLink() {
  * @param url
  * @return promise:urlRecord
  */
-export function createUrl(url: string): Promise<urlModelInterface>|Promise<any> {
-	return new Promise((resolve, reject) => {
+export function createUrl(url: string): Promise<urlModelInterface> {
+	return new Promise<urlModelInterface>((resolve, reject) => {
 		var urlRecord: Mongoose.Document = new urlModel({url});
 		urlRecord.save((err, res) => {
 			if(err) {
@@ -163,7 +171,7 @@ export function createUrl(url: string): Promise<urlModelInterface>|Promise<any> 
  * 获取url的TDK
  * @param urlRecord
  */
-export function getUrlTDK(body: string) {
+export function getUrlTDK(body: string): Promise<TDKItem> {
 	return Promise
 		.resolve(body)
 		.then(function(body) {
@@ -181,8 +189,8 @@ export function getUrlTDK(body: string) {
 /**
  * 根据url获取url记录
  */
-export function getUrlRecordByUrl(url: string): Promise<urlModelInterface>|Promise<any> {
-	return new Promise((resolve, reject) => {
+export function getUrlRecordByUrl(url: string): Promise<urlModelInterface> {
+	return new Promise<urlModelInterface>((resolve, reject) => {
 		urlModel.findOne({url: url}, (err, doc) => {
 			if(err) {
 				reject(err);
@@ -198,8 +206,8 @@ export function getUrlRecordByUrl(url: string): Promise<urlModelInterface>|Promi
 /**
  * 根据id获取url记录
  */
-export function getUrlRecordById(id: string) {
-	return new Promise((resolve, reject) => {
+export function getUrlRecordById(id: string): Promise<urlModelInterface> {
+	return new Promise<urlModelInterface>((resolve, reject) => {
 		urlModel.findOne({_id: id}, (err, docs) => {
 			if(err) {
 				reject(err);
@@ -215,8 +223,8 @@ export function getUrlRecordById(id: string) {
 /**
  * 根据url来获取子链接
  */
-export function getUrlSon(url: string): Promise<urlModelInterface[]>|Promise<any> {
-	return new Promise((resolve, reject) => {
+export function getUrlSon(url: string): Promise<urlModelInterface[]> {
+	return new Promise<urlModelInterface[]>((resolve, reject) => {
 		urlModel.find({parentUrl: url}, (err, docs) => {
 			if(err) {
 				reject(err);
