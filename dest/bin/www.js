@@ -7,7 +7,6 @@ var http = require('http');
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 var server = http.createServer(app);
-var io = require('socket.io')(server);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
@@ -50,5 +49,4 @@ function onListening() {
 }
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/robot');
-module.exports = io;
 //# sourceMappingURL=www.js.map

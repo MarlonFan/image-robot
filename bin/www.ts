@@ -18,7 +18,6 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
-var io = require('socket.io')(server);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -90,5 +89,3 @@ function onListening() {
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/robot');
-
-export = io;

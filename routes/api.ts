@@ -116,7 +116,7 @@ router.get('/user/download-all-img', (req, res, next) => {
 			return Image.downloadAllImage(records, 1);
 		})
 		.then(() => {
-			res.json(ResJson.redirectJson(''));
+			res.json(ResJson.successJson(''));
 		})
 })
 

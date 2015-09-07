@@ -7,6 +7,8 @@ var hbs = require('hbs');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var apis = require('./routes/api');
+var IO = require('./modules/core/socket');
+var io = IO;
 var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');

@@ -1,6 +1,7 @@
 var Promise = require('bluebird');
 var Fs = require('fs');
 var Request = require('request');
+var Io = require('../modules/core/socket');
 var Config = require('../config');
 var image_1 = require('../models/image');
 function downloadAllImage(imageList, count) {
@@ -11,6 +12,14 @@ function downloadAllImage(imageList, count) {
         if (imageList.length == 0) {
             return;
         }
+        Io.on('connection', function (socket) {
+            var notice = setInterval(function () {
+                socket.emit('news', [imageList.length, allNumber]);
+                if (imageList.length == 0) {
+                    clearInterval(notice);
+                }
+            }, 1);
+        });
         for (var i = 0; i < count; i++) {
             queueDownloadImage(imageList);
         }

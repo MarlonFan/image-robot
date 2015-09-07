@@ -2,7 +2,7 @@ import * as Promise from 'bluebird';
 import * as Fs from 'fs';
 import * as Request from 'request';
 import * as Http from 'http';
-import * as Io from 'socket.io';
+import * as Io from '../modules/core/socket';
 
 import * as Config from '../config';
 import * as Url from './url';
@@ -23,14 +23,14 @@ export function downloadAllImage(imageList: ImageModelInterface[], count: number
 				return;
 			}
 
-			// io.on('connection', function (socket) {
-			// 	var notice = setInterval(function() {
-			// 		socket.emit('news', [imageList.length,allNumber]);
-			// 		if (imageList.length == 0) {
-			// 			clearInterval(notice);
-			// 		}
-			// 	}, 1)
-			// });
+			Io.on('connection', function (socket: any) {
+				var notice = setInterval(function() {
+					socket.emit('news', [imageList.length,allNumber]);
+					if (imageList.length == 0) {
+						clearInterval(notice);
+					}
+				}, 1)
+			});
 
 			for(var i = 0; i < count; i++) {
 				queueDownloadImage(imageList);

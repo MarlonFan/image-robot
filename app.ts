@@ -9,7 +9,10 @@ import * as hbs from 'hbs';
 import * as routes from './routes/index';
 import * as users from './routes/users';
 import * as apis from './routes/api';
+import * as IO from './modules/core/socket';
 
+
+var io = IO;
 var app = express();
 
 // view engine setup

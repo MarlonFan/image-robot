@@ -90,7 +90,7 @@ router.get('/user/download-all-img', function (req, res, next) {
         return Image.downloadAllImage(records, 1);
     })
         .then(function () {
-        res.json(ResJson.redirectJson(''));
+        res.json(ResJson.successJson(''));
     });
 });
 module.exports = router;

@@ -58,9 +58,9 @@
 
 {{#extend "script"}}
 <script src="/javascripts/user/robot/robot.js"></script>
-<script src="http://127.0.0.1:3000/socket.io/socket.io.js"></script>
+<script src="http://127.0.0.1:3001/socket.io/socket.io.js"></script>
 <script>
-	var socket = io.connect('http://localhost:3000');
+	var socket = io.connect('http://localhost:3001');
 	
 	socket.on('news', function (data) {		
 		var width = ((data[1] - data[0]) / data[1]) * 100;
