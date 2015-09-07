@@ -8,13 +8,18 @@ import * as Config from '../config';
 import * as Url from './url';
 import { Model as imageModel, ModelInterface as ImageModelInterface, PropertyList as imagePropertyList } from '../models/image';
 
+
+Io.on('connection', function (socket: any) {
+	socket.emit('client id', socket.id);
+});
+
 /**
  * 根据一个图片urlList来下载图片
  * @param imageList
  * @param count
  * @return promise:void
  */
-export function downloadAllImage(imageList: ImageModelInterface[], count: number): Promise<void> {
+export function downloadAllImage(imageList: ImageModelInterface[], count: number, clientId: string): Promise<void> {
 	var allNumber: number = imageList.length;
 	return Promise
 		.resolve(null)
@@ -22,15 +27,15 @@ export function downloadAllImage(imageList: ImageModelInterface[], count: number
 			if(imageList.length == 0) {
 				return;
 			}
-
-			Io.on('connection', function (socket: any) {
+			
+			if (Io.sockets.connected[clientId]) {
 				var notice = setInterval(function() {
-					socket.emit('news', [imageList.length,allNumber]);
+					Io.sockets.connected[clientId].emit('news', [imageList.length,allNumber]);
 					if (imageList.length == 0) {
 						clearInterval(notice);
 					}
-				}, 1)
-			});
+				}, 100)
+			}
 
 			for(var i = 0; i < count; i++) {
 				queueDownloadImage(imageList);

@@ -4,7 +4,10 @@ var Request = require('request');
 var Io = require('../modules/core/socket');
 var Config = require('../config');
 var image_1 = require('../models/image');
-function downloadAllImage(imageList, count) {
+Io.on('connection', function (socket) {
+    socket.emit('client id', socket.id);
+});
+function downloadAllImage(imageList, count, clientId) {
     var allNumber = imageList.length;
     return Promise
         .resolve(null)
@@ -12,14 +15,14 @@ function downloadAllImage(imageList, count) {
         if (imageList.length == 0) {
             return;
         }
-        Io.on('connection', function (socket) {
+        if (Io.sockets.connected[clientId]) {
             var notice = setInterval(function () {
-                socket.emit('news', [imageList.length, allNumber]);
+                Io.sockets.connected[clientId].emit('news', [imageList.length, allNumber]);
                 if (imageList.length == 0) {
                     clearInterval(notice);
                 }
-            }, 1);
-        });
+            }, 100);
+        }
         for (var i = 0; i < count; i++) {
             queueDownloadImage(imageList);
         }

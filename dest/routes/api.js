@@ -87,7 +87,7 @@ router.post('/user/urlinfo/get-son-img', function (req, res, next) {
 router.get('/user/download-all-img', function (req, res, next) {
     Image.getAllNotDownloadImage()
         .then(function (records) {
-        return Image.downloadAllImage(records, 1);
+        return Image.downloadAllImage(records, 1, req.query.clientId);
     })
         .then(function () {
         res.json(ResJson.successJson(''));
