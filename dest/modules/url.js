@@ -15,8 +15,10 @@ function pullPage(url) {
         }, function (err, res, body) {
             if (err || res.statusCode != 200) {
                 reject(err);
+                return;
             }
             resolve(body);
+            return;
         });
     })
         .catch(function (err) {

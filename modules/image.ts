@@ -79,8 +79,8 @@ export function queueDownloadImage(imageList: ImageModelInterface[]): void {
  * @param imgList[];
  * @return promise:void
  */
-export function saveMultipleImage(imageList: imagePropertyList[]): Promise<any> {
-	return new Promise((resolve, reject) => {
+export function saveMultipleImage(imageList: imagePropertyList[]): Promise<ImageModelInterface> {
+	return new Promise<ImageModelInterface>((resolve, reject) => {
 		imageModel.create(imageList, (err, res) => {
 			if(err) {
 				reject(err);
@@ -96,8 +96,8 @@ export function saveMultipleImage(imageList: imagePropertyList[]): Promise<any> 
 /**
  * 获取所有已下载图片
  */
-export function getAllImage(): Promise<any> {
-	return new Promise((resolve, reject) => {
+export function getAllImage(): Promise<ImageModelInterface[]> {
+	return new Promise<ImageModelInterface[]>((resolve, reject) => {
 		imageModel.find({isDownload: true}, (err, res) => {
 			if (err) {
 				reject(err);
@@ -113,8 +113,8 @@ export function getAllImage(): Promise<any> {
 /**
  * 获取所有未下载图片
  */
-export function getAllNotDownloadImage(): Promise<any> {
-	return new Promise((resolve, reject) => {
+export function getAllNotDownloadImage(): Promise<ImageModelInterface[]> {
+	return new Promise<ImageModelInterface[]>((resolve, reject) => {
 		imageModel.find({isDownload: false}, (err, res) => {
 			if (err) {
 				reject(err);
@@ -130,8 +130,8 @@ export function getAllNotDownloadImage(): Promise<any> {
 /**
  * 根据url来获取图片列表
  */
-export function getUrlImg(url: string): Promise<any> {
-	return new Promise((resolve, reject) => {
+export function getUrlImg(url: string): Promise<ImageModelInterface[]> {
+	return new Promise<ImageModelInterface[]>((resolve, reject) => {
 		imageModel.find({pageUrl: url}, (err, res) => {
 			if (err) {
 				reject(err);
@@ -147,8 +147,8 @@ export function getUrlImg(url: string): Promise<any> {
 /**
  * 删除所有图片
  */
-export function deleteAll(): Promise<any> {
-	return new Promise((resolve, reject) => {
+export function deleteAll(): Promise<void> {
+	return new Promise<void>((resolve, reject) => {
 		imageModel.remove({}, err => {
 			if (err) {
 				reject(err);
