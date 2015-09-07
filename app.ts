@@ -4,7 +4,7 @@ import * as favicon from 'serve-favicon';
 import * as logger from 'morgan';
 import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
-import * as hbs from 'handlebars';
+import * as hbs from 'hbs';
 
 import * as routes from './routes/index';
 import * as users from './routes/users';
