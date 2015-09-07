@@ -1,0 +1,39 @@
+{{#extend "css"}}
+<link rel='stylesheet' href='/stylesheets/user/control/control.css' />
+{{/extend}}
+
+<div class="col-lg-12">
+	<div class="page-header">
+  		<h1>所有图片管理</h1>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div style="margin-bottom: 10px;" class="btn-group" role="group" aria-label="...">
+				<button type="button" class="btn btn-default">打包所选</button>
+				<button type="button" class="btn btn-default">打包全部</button>
+				<button type="button" class="btn btn-default J-delete-all-image">全部删除</button>
+			</div>
+			
+			<ul class="list-group">
+				{{#each imageList}}
+					<li class="list-group-item image-item" data-id="{{this.id}}">
+						<img class="remote-image" src="/download-image/{{this.imageName}}" alt="">
+						<a onclick="javascriot:void(0)" class="J-img-name" data-url={{this.pageUrl}}>
+							{{this.imageName}}
+						</a>
+						<ul class="list-group image-info">
+						</ul>
+						<button style="float:right;" data-id={{this.id}} class="btn btn-danger btn-sm J-delete-image">删除</button>
+					</li>
+				{{/each}}
+			</ul>
+		</div>
+	</div>
+</div>
+
+{{#extend "script"}}
+<script src="/javascripts/user/control/control.js"></script>
+<script>
+	
+</script>
+{{/extend}}

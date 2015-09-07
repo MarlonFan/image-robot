@@ -1,0 +1,14 @@
+.image-item {
+	position: relative;	
+}
+
+.remote-image {
+	position: static;
+	width: 150px;
+}
+
+.image-info {
+	display: none;
+	position: absolute;
+	z-index: 1;
+}
