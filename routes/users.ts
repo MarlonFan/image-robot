@@ -8,7 +8,10 @@ import { Model as imageModel, ModelInterface as imageModelInterface } from '../m
 var router = Express.Router();
 
 router.get('/', (req, res, next) => {
-	res.send('xxxx');
+	Image.getAllImage()
+		.then(docs => {
+			res.render('users/control', {imageList: docs});
+		});
 });
 
 router.get('/robot', (req, res, next) => {

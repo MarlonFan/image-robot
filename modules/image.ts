@@ -131,7 +131,6 @@ export function getAllNotDownloadImage(): Promise<any> {
  * 根据url来获取图片列表
  */
 export function getUrlImg(url: string): Promise<any> {
-	console.log(url);
 	return new Promise((resolve, reject) => {
 		imageModel.find({pageUrl: url}, (err, res) => {
 			if (err) {
@@ -143,4 +142,56 @@ export function getUrlImg(url: string): Promise<any> {
 			}
 		});
 	});
+}
+
+/**
+ * 删除所有图片
+ */
+export function deleteAll(): Promise<any> {
+	return new Promise((resolve, reject) => {
+		imageModel.remove({}, err => {
+			if (err) {
+				reject(err);
+				return;
+			}
+			resolve(null);
+			return;
+		})
+	})
+}
+
+/**
+ * 删除指定照片
+ * @param imageId: number
+ */
+export function deleteImageById(id: string): Promise<void> {
+	return new Promise<void>((resolve, reject) => {
+		imageModel.remove({_id: id}, err => {
+			if (err) {
+				reject(err);
+				return;
+			} else {
+				resolve(null);
+				return;
+			}
+		})
+	})
+}
+
+/**
+ * 根据id获取某张图片
+ * @param imageId: number
+ */
+export function getImageRecordById(id: string): Promise<ImageModelInterface> {
+	return new Promise<ImageModelInterface>((resolve, reject) => {
+		imageModel.findOne({_id: id}, (err, doc) => {
+			if (err) {
+				reject(err);
+				return;
+			} else {
+				resolve(doc);
+				return;
+			}
+		})
+	})
 }

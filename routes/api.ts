@@ -120,6 +120,46 @@ router.get('/user/download-all-img', (req, res, next) => {
 		})
 })
 
+router.post('/user/control/delete-all-image', (req, res, next) => {
+	Image.deleteAll()
+		.then(() => {
+			return res.json(ResJson.redirectJson(''));
+		})
+		.catch(err => {
+			console.log(err);
+			return res.json(ResJson.failedJson(err));
+		});
+});
+
+router.post('/user/control/delete-image', (req, res, next) => {
+	if( ! paramValidator.isString(req.body.id, 'id', res)) {
+		return;
+	}
+	
+	Image.deleteImageById(req.body.id)
+		.then(() => {
+			return res.json(ResJson.redirectJson(''));
+		})
+		.catch(err => {
+			console.log(err);
+			return res.json(ResJson.failedJson(err));
+		});
+})
+
+router.post('/user/control/get-image-info', (req, res, next) => {
+	if( ! paramValidator.isString(req.body.url, 'url', res)) {
+		return;
+	}
+	
+	Url.pullPage(req.body.url)
+		.then(body => {
+			return Url.getUrlTDK(body);
+		})
+		.then(TKD => {
+			return res.json(ResJson.successJson(TKD));	
+		})
+})
+
 module router {} 
 
 export = router;

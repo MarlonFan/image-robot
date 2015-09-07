@@ -93,5 +93,40 @@ router.get('/user/download-all-img', function (req, res, next) {
         res.json(ResJson.successJson(''));
     });
 });
+router.post('/user/control/delete-all-image', function (req, res, next) {
+    Image.deleteAll()
+        .then(function () {
+        return res.json(ResJson.redirectJson(''));
+    })
+        .catch(function (err) {
+        console.log(err);
+        return res.json(ResJson.failedJson(err));
+    });
+});
+router.post('/user/control/delete-image', function (req, res, next) {
+    if (!paramValidator.isString(req.body.id, 'id', res)) {
+        return;
+    }
+    Image.deleteImageById(req.body.id)
+        .then(function () {
+        return res.json(ResJson.redirectJson(''));
+    })
+        .catch(function (err) {
+        console.log(err);
+        return res.json(ResJson.failedJson(err));
+    });
+});
+router.post('/user/control/get-image-info', function (req, res, next) {
+    if (!paramValidator.isString(req.body.url, 'url', res)) {
+        return;
+    }
+    Url.pullPage(req.body.url)
+        .then(function (body) {
+        return Url.getUrlTDK(body);
+    })
+        .then(function (TKD) {
+        return res.json(ResJson.successJson(TKD));
+    });
+});
 module.exports = router;
 //# sourceMappingURL=api.js.map

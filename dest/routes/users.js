@@ -3,7 +3,10 @@ var Url = require('../modules/url');
 var Image = require('../modules/image');
 var router = Express.Router();
 router.get('/', function (req, res, next) {
-    res.send('xxxx');
+    Image.getAllImage()
+        .then(function (docs) {
+        res.render('users/control', { imageList: docs });
+    });
 });
 router.get('/robot', function (req, res, next) {
     Url.getAllPrimaryLink()

@@ -95,7 +95,6 @@ function getAllNotDownloadImage() {
 }
 exports.getAllNotDownloadImage = getAllNotDownloadImage;
 function getUrlImg(url) {
-    console.log(url);
     return new Promise(function (resolve, reject) {
         image_1.Model.find({ pageUrl: url }, function (err, res) {
             if (err) {
@@ -110,4 +109,47 @@ function getUrlImg(url) {
     });
 }
 exports.getUrlImg = getUrlImg;
+function deleteAll() {
+    return new Promise(function (resolve, reject) {
+        image_1.Model.remove({}, function (err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(null);
+            return;
+        });
+    });
+}
+exports.deleteAll = deleteAll;
+function deleteImageById(id) {
+    return new Promise(function (resolve, reject) {
+        image_1.Model.remove({ _id: id }, function (err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            else {
+                resolve(null);
+                return;
+            }
+        });
+    });
+}
+exports.deleteImageById = deleteImageById;
+function getImageRecordById(id) {
+    return new Promise(function (resolve, reject) {
+        image_1.Model.findOne({ _id: id }, function (err, doc) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            else {
+                resolve(doc);
+                return;
+            }
+        });
+    });
+}
+exports.getImageRecordById = getImageRecordById;
 //# sourceMappingURL=image.js.map
