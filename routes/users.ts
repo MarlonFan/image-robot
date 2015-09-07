@@ -48,4 +48,6 @@ router.get('/urlinfo', (req, res, next) => {
 		});
 });
 
-module.exports = router;
+module router {} 
+
+export = router;

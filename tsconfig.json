@@ -16,12 +16,15 @@
     "filesGlob": [
         "*/**/*.ts",
         "!node_modules/**",
-        "config.ts"
+        "config.ts",
+        "app.ts"
     ],
     "files": [
+        "bin/www.ts",
         "models/image.ts",
         "models/url.ts",
         "modules/core/res-json.ts",
+        "modules/core/socket.ts",
         "modules/image.ts",
         "modules/url.ts",
         "routes/api.ts",
@@ -29,17 +32,25 @@
         "routes/users.ts",
         "test/image-module.ts",
         "typings/bluebird/bluebird.d.ts",
+        "typings/body-parser/body-parser.d.ts",
+        "typings/cookie-parser/cookie-parser.d.ts",
         "typings/express/express.d.ts",
         "typings/form-data/form-data.d.ts",
         "typings/handlebars/handlebars.d.ts",
         "typings/mime/mime.d.ts",
         "typings/mongoose/mongoose.d.ts",
+        "typings/morgan/morgan.d.ts",
         "typings/node/node.d.ts",
+        "typings/promise-pool/promise-pool.d.ts",
+        "typings/q-retry/q-retry.d.ts",
+        "typings/q/Q.d.ts",
         "typings/request/request.d.ts",
+        "typings/serve-favicon/serve-favicon.d.ts",
         "typings/serve-static/serve-static.d.ts",
         "typings/socket.io/socket.io.d.ts",
         "typings/tsd.d.ts",
         "validator/param-validator.ts",
-        "config.ts"
+        "config.ts",
+        "app.ts"
     ]
 }

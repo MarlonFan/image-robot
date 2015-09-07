@@ -120,4 +120,6 @@ router.get('/user/download-all-img', (req, res, next) => {
 		})
 })
 
-module.exports = router;
+module router {} 
+
+export = router;
